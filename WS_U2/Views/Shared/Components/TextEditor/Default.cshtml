@@ -1,0 +1,22 @@
+﻿@model Post
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    string bold = "<b></b>";
+    string italics = "<i></i>";
+    string underline = "<u></u>";
+}
+
+<div>
+    <label asp-for="PostBody" name="PostBody" class="control-label" hidden="true"></label>
+    <h6>Text</h6>
+    <p>Allowed text tags: <b>@bold</b>, <i>@italics</i> and <u>@underline</u></p>
+    <textarea asp-for="PostBody" name="PostBody" id="TextEditor" class="form-control"></textarea>
+    <span asp-validation-for="PostBody" name="PostBody" class="text-danger"></span>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

@@ -1,0 +1,36 @@
+﻿@using WS_U2.Models
+@model List<Topic>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <a asp-controller="Topic" asp-action="Create">New topic</a>
+    @if (Model != null)
+    {
+        <table class="table table-stripped">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Created by</th>
+                    <th scope="col">Created on</th>
+                    <th scope="col">Last updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var topic in Model)
+                {
+                    <tr class="topic" onclick="location.href = '@Url.Action("View", "Topic", new { id = @topic.Id })'">
+                        <th scope="row">@Html.Encode(topic.Title)</th>
+                        <td>@topic.CreatedBy</td>
+                        <td>@topic.CreatedDateTime.ToUniversalTime()</td>
+                        <td>@topic.LastPostDateTime.ToUniversalTime()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>

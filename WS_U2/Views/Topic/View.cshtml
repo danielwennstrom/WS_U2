@@ -1,0 +1,65 @@
+﻿@using System.Web
+@model Topic
+@{
+    ViewData["Title"] = @Model.Title;
+}
+
+<div>
+    <div class="row">
+    <div class="col-auto">
+        @Html.Encode(Model.Title)
+    </div>
+    <div class="col-auto">
+        @Model.CreatedBy
+    </div>
+    <div class="col-auto">
+        @Model.CreatedDateTime
+    </div>
+    </div>
+    <div class="row mt-3 mb-3">
+        <div class="col">
+            @Html.Raw(EncodePost(Model.PostBody))
+        </div>
+    </div>
+</div>
+
+<h3>Comments</h3>
+    @foreach (var post in ViewBag.Posts)
+    {
+        <div class="border-bottom mt-2">
+            <div class="row">
+                <div class="col-auto">
+                    @post.PostedBy
+                </div>
+                <div class="col-auto">
+                    @post.PostedDateTime
+                </div>
+            </div>
+            <div class="row mt-2 mb-2">
+                <div class="col">
+                    @Html.Raw(EncodePost(post.PostBody))
+                </div>
+            </div>
+        </div>
+    }
+    @await Component.InvokeAsync("NewPost", new { topicId = @Model.TopicId })
+</p>
+
+@{
+    string EncodePost(string text)
+    {
+        var allowedTags = new List<string>() { "<b>","</b>", "<i>", "</i>", "<u>", "</u>"};
+        if(!string.IsNullOrEmpty(text))
+        {
+            string encodedContent = HttpUtility.HtmlEncode(text);
+            foreach (var tag in allowedTags)
+            {
+                string encodedTag = HttpUtility.HtmlEncode(tag);
+                encodedContent = encodedContent.Replace(encodedTag, tag);
+            }
+            return encodedContent;
+        }
+        
+        return null;
+    }
+}
